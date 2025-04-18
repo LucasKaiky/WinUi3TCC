@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WinMarket.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WinMarket.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

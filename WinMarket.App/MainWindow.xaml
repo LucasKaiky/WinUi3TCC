@@ -1,0 +1,38 @@
+<Window
+    x:Class="WinMarket.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinMarket.App"
+    xmlns:pages="using:WinMarket.App.pages"
+    Title="WinMarket">
+
+    <NavigationView
+        x:Name="NavViewControl"
+        SelectionChanged="OnNavViewSelectionChanged"
+        IsSettingsVisible="False"
+        Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+        IsBackButtonVisible="Collapsed">
+
+        <NavigationView.MenuItems>
+            <NavigationViewItem Icon="Home" Content="Início" Tag="HomePage" />
+            <NavigationViewItem Icon="Shop" Content="Produtos" Tag="ManageProductsPage" />
+            <NavigationViewItem Content="Carrinho" Tag="CartPage">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE7BF;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Adicionar Produtos" Tag="ProductDetailsPage">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE710;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+        </NavigationView.MenuItems>
+
+        <NavigationView.FooterMenuItems>
+            <NavigationViewItem Icon="Contact" Content="Perfil" Tag="UserProfilePage" />
+        </NavigationView.FooterMenuItems>
+
+        <Frame x:Name="ContentFrame" />
+
+    </NavigationView>
+</Window>
