@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using WinMarket.Core;
-using WinMarket.Data.services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using WinMarket.Core.Services;
+using WinMarket.Data.Services;
 using WinMarket.ViewModel.ViewModels;
 
 namespace WinMarket.App
@@ -24,24 +25,24 @@ namespace WinMarket.App
     {
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
-            // registre interfaces e modelos puros
-            services.AddSingleton<IProductService, ProductService>();
+            // somente interfaces ou configurações de domínio
             return services;
         }
 
         public static IServiceCollection AddDataServices(this IServiceCollection services)
         {
-            // registre repositórios, EF Core, JSON, etc.
-            // ex: .AddDbContext<MeuDbContext>(...)
+            services
+                .AddHttpClient<IProductService, ProductService>(client =>
+                {
+                    client.BaseAddress = new Uri("https://fakestoreapi.com/");
+                });
             return services;
         }
 
         public static IServiceCollection AddViewModelServices(this IServiceCollection services)
         {
-            // registre todos os ViewModels
+            services.AddTransient<ManageProductsPageViewModel>();
             services.AddTransient<HomePageViewModel>();
-            // .AddTransient<ManageProductsViewModel>()
-            // .AddTransient<CartPageViewModel>()
             return services;
         }
     }

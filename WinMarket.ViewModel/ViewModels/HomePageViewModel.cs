@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WinMarket.Core;
 using WinMarket.Core.Models;
+using WinMarket.Core.Services;
 
 namespace WinMarket.ViewModel.ViewModels
 {

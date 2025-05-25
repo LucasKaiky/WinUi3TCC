@@ -1,5 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Diagnostics;
 using System.Linq;
 using WinMarket.App.pages;
 
@@ -36,7 +38,19 @@ namespace WinMarket.App
                 _ => typeof(HomePage)
             };
 
-            ContentFrame.Navigate(pageType);
+            // **Guarda para não navegar duas vezes para a mesma página**
+            if (ContentFrame.CurrentSourcePageType != pageType)
+            {
+                try
+                {
+                    ContentFrame.Navigate(pageType);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Navegação falhou: " + ex);
+                }
+            }
         }
+
     }
 }

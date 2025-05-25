@@ -1,7 +1,8 @@
 {
   "profiles": {
     "WinMarket.App (Package)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
     },
     "WinMarket.App (Unpackaged)": {
       "commandName": "Project"

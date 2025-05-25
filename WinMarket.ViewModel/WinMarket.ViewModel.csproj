@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinMarket.Core\WinMarket.Core.csproj" />
+    <ProjectReference Include="..\WinMarket.Data\WinMarket.Data.csproj" />
   </ItemGroup>
   
 </Project>

@@ -1,4 +1,4 @@
-﻿// WinMarket.Data/Services/ProductService.cs
+﻿// WinMarket.Data/Services/FakeStoreProductService.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +10,25 @@ using WinMarket.Core.Services;
 
 namespace WinMarket.Data.Services
 {
-    public class ProductService : IProductService
+    public class FakeStoreProductService : IProductService
     {
         private const string BaseUrl = "https://fakestoreapi.com/products";
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _http;
 
-        public ProductService(HttpClient httpClient) => _httpClient = httpClient;
+        public FakeStoreProductService(HttpClient http)
+        {
+            _http = http;
+        }
 
         public async Task<IEnumerable<Product>> GetFeaturedProductsAsync()
         {
-            var json = await _httpClient.GetStringAsync($"{BaseUrl}?limit=50");
+            var json = await _http.GetStringAsync($"{BaseUrl}?limit=10");
             return JsonSerializer.Deserialize<List<Product>>(json);
         }
 
         public async Task<IEnumerable<Product>> SearchProductsAsync(string query)
         {
-            var json = await _httpClient.GetStringAsync(BaseUrl);
+            var json = await _http.GetStringAsync(BaseUrl);
             var all = JsonSerializer.Deserialize<List<Product>>(json);
             return all.Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase));
         }

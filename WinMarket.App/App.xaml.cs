@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
 
 namespace WinMarket.App
 {
@@ -12,7 +13,6 @@ namespace WinMarket.App
         {
             this.InitializeComponent();
             Ioc.Default.ConfigureServices(Host.Services);
-
         }
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)

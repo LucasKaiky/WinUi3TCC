@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿// WinMarket.Core/Services/IProductService.cs
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WinMarket.Core.Models;
 
-namespace WinMarket.Core
+namespace WinMarket.Core.Services
 {
     public interface IProductService
     {
