@@ -1,8 +1,8 @@
-﻿// WinMarket.ViewModel/ViewModels/ManageProductsPageViewModel.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WinMarket.Core.Models;
@@ -14,11 +14,14 @@ namespace WinMarket.ViewModel.ViewModels
     {
         private const int PageSize = 10;
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
         private List<Product> _allProducts = new();
 
-        public ManageProductsPageViewModel(IProductService productService)
+        public ManageProductsPageViewModel(IProductService productService, ICartService cartService)
         {
             _productService = productService;
+            _cartService = cartService;
+            RefreshCommand = new AsyncRelayCommand(RefreshAsync);
             LoadProductsAsync();
         }
 
@@ -33,6 +36,17 @@ namespace WinMarket.ViewModel.ViewModels
 
         [ObservableProperty]
         private int totalPages;
+
+        [ObservableProperty]
+        private bool isBusy;
+
+        [ObservableProperty]
+        private bool hasResults = true;
+
+        [ObservableProperty]
+        private int filteredCount;
+
+        public IAsyncRelayCommand RefreshCommand { get; }
 
         partial void OnSearchTextChanged(string value)
         {
@@ -55,29 +69,52 @@ namespace WinMarket.ViewModel.ViewModels
         }
 
         [RelayCommand]
-        private void AddToCart(Product product) { }
+        private async Task AddToCart(int productId)
+        {
+            if (productId <= 0) return;
+            await _cartService.AddItemAsync(productId, 1);
+        }
 
         [RelayCommand]
-        private void BuyNow(Product product) { }
+        private async Task BuyNow(int productId)
+        {
+            if (productId <= 0) return;
+            await _cartService.AddItemAsync(productId, 1);
+        }
 
         private async void LoadProductsAsync()
         {
+            IsBusy = true;
             _allProducts = (await _productService.GetFeaturedProductsAsync()).ToList();
+            IsBusy = false;
+            CurrentPage = 1;
+            UpdatePaging();
+        }
+
+        private async Task RefreshAsync()
+        {
+            IsBusy = true;
+            _allProducts = (await _productService.GetFeaturedProductsAsync()).ToList();
+            IsBusy = false;
             CurrentPage = 1;
             UpdatePaging();
         }
 
         private void UpdatePaging()
         {
-            var filtro = string.IsNullOrWhiteSpace(SearchText)
+            var query = string.IsNullOrWhiteSpace(SearchText)
                 ? _allProducts
                 : _allProducts.Where(p => p.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
 
-            TotalPages = (int)Math.Ceiling(filtro.Count() / (double)PageSize);
+            var list = query.ToList();
+            FilteredCount = list.Count;
+            HasResults = FilteredCount > 0;
+
+            TotalPages = Math.Max(1, (int)Math.Ceiling(FilteredCount / (double)PageSize));
+            CurrentPage = Math.Clamp(CurrentPage, 1, TotalPages);
+
             Products = new ObservableCollection<Product>(
-                filtro
-                  .Skip((CurrentPage - 1) * PageSize)
-                  .Take(PageSize));
+                list.Skip((CurrentPage - 1) * PageSize).Take(PageSize));
 
             NextPageCommand.NotifyCanExecuteChanged();
             PreviousPageCommand.NotifyCanExecuteChanged();

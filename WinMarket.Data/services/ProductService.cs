@@ -1,6 +1,4 @@
-﻿// WinMarket.Data/Services/ProductService.cs
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -27,7 +25,13 @@ namespace WinMarket.Data.Services
         {
             var json = await _httpClient.GetStringAsync(BaseUrl);
             var all = JsonSerializer.Deserialize<List<Product>>(json);
-            return all.Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase));
+            return all.Where(p => p.Name.Contains(query, System.StringComparison.OrdinalIgnoreCase));
+        }
+
+        public async Task<Product> GetByIdAsync(int id)
+        {
+            var json = await _httpClient.GetStringAsync($"{BaseUrl}/{id}");
+            return JsonSerializer.Deserialize<Product>(json);
         }
     }
 }

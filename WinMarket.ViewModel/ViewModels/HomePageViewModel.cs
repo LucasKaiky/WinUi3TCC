@@ -1,49 +1,31 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using WinMarket.Core.Models;
 using WinMarket.Core.Services;
 
 namespace WinMarket.ViewModel.ViewModels
 {
     public partial class HomePageViewModel : ObservableObject
     {
-        private readonly IProductService _productService;
+        private readonly IAuthState _authState;
 
-        public ObservableCollection<Product> FeaturedProducts { get; } = new();
-
-        [ObservableProperty]
-        private string searchQuery;
-
-        public HomePageViewModel(IProductService productService)
+        public HomePageViewModel(IAuthState authState)
         {
-            _productService = productService;
-            _ = LoadFeaturedProductsAsync();
+            _authState = authState;
+            _authState.PropertyChanged += OnAuthChanged;
         }
 
-        [RelayCommand]
-        private async Task LoadFeaturedProductsAsync()
-        {
-            var products = await _productService.GetFeaturedProductsAsync();
-            FeaturedProducts.Clear();
-            foreach (var p in products)
-                FeaturedProducts.Add(p);
-        }
+        public string DisplayName => _authState.CurrentUser?.FullName?.Trim() is { Length: > 0 } n ? n : "Cliente"
+            ;
 
-        [RelayCommand]
-        private async Task SearchAsync(string query)
-        {
-            var results = await _productService.SearchProductsAsync(query);
-            FeaturedProducts.Clear();
-            foreach (var p in results)
-                FeaturedProducts.Add(p);
-        }
+        public string Greeting => $"Bem-vindo, {DisplayName}";
 
-        [RelayCommand]
-        private void ViewDetails(int productId)
+        private void OnAuthChanged(object sender, PropertyChangedEventArgs e)
         {
-            // navegar passando productId (implemente via Messenger ou injeção de NavigationService)
+            if (e.PropertyName == nameof(IAuthState.CurrentUser))
+            {
+                OnPropertyChanged(nameof(DisplayName));
+                OnPropertyChanged(nameof(Greeting));
+            }
         }
     }
 }

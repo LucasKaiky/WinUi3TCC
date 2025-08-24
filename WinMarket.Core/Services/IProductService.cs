@@ -1,5 +1,4 @@
-﻿// WinMarket.Core/Services/IProductService.cs
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WinMarket.Core.Models;
 
@@ -9,5 +8,6 @@ namespace WinMarket.Core.Services
     {
         Task<IEnumerable<Product>> GetFeaturedProductsAsync();
         Task<IEnumerable<Product>> SearchProductsAsync(string query);
+        Task<Product> GetByIdAsync(int id);
     }
 }

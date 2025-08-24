@@ -2,35 +2,42 @@
     x:Class="WinMarket.App.pages.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid
-        Padding="24"
-        RowSpacing="24"
-        ColumnSpacing="24">
-
+    <Grid Padding="24" RowSpacing="24" ColumnSpacing="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Título -->
-        <TextBlock
-            Grid.Row="0"
-            Text="WinMarket"
-            FontSize="36"
-            FontWeight="Bold"
-            HorizontalAlignment="Center"
-            Margin="0,0,0,16"/>
+        <Border Grid.Row="0" Padding="24" CornerRadius="16">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{ThemeResource SystemAccentColor}" Offset="0"/>
+                    <GradientStop Color="{ThemeResource SystemAccentColorDark2}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="WinMarket" FontSize="32" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="{Binding Greeting}" Foreground="White" Opacity="0.9"/>
+                    <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+                        <Button Content="Ver produtos" Tag="ManageProductsPage" Click="OnNavigateClick" Style="{StaticResource AccentButtonStyle}"/>
+                        <Button Content="Meu perfil" Tag="UserProfilePage" Click="OnNavigateClick"/>
+                    </StackPanel>
+                </StackPanel>
+                <PersonPicture Grid.Column="1" Width="72" Height="72" DisplayName="{Binding DisplayName}"/>
+            </Grid>
+        </Border>
 
-        <!-- Grid 2x2 de cards preenchendo toda a área -->
-        <Grid Grid.Row="1"
-              RowSpacing="24"
-              ColumnSpacing="24">
-
+        <Grid Grid.Row="1" RowSpacing="16" ColumnSpacing="16">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -40,94 +47,78 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Card: Produtos -->
-            <Button
-                Grid.Row="0"
-                Grid.Column="0"
-                Padding="12"
-                Tag="ManageProductsPage"
-                Click="OnNavigateClick"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <StackPanel
-                    Spacing="8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <FontIcon Glyph="&#xE719;" FontSize="48"/>
-                    <TextBlock
-                        Text="Produtos"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        TextAlignment="Center"/>
+            <Button Grid.Row="0" Grid.Column="0" Padding="16" CornerRadius="14"
+                    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                    Tag="ManageProductsPage" Click="OnNavigateClick"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <FontIcon Glyph="&#xE719;" FontSize="44"/>
+                    <TextBlock Text="Produtos" FontSize="16" FontWeight="SemiBold" TextAlignment="Center"/>
+                    <TextBlock Text="Catálogo completo" Opacity="0.7"/>
                 </StackPanel>
             </Button>
 
-            <!-- Card: Carrinho -->
-            <Button
-                Grid.Row="0"
-                Grid.Column="1"
-                Padding="12"
-                Tag="CartPage"
-                Click="OnNavigateClick"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <StackPanel
-                    Spacing="8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <FontIcon Glyph="&#xE7BF;" FontSize="48"/>
-                    <TextBlock
-                        Text="Carrinho"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        TextAlignment="Center"/>
+            <Button Grid.Row="0" Grid.Column="1" Padding="16" CornerRadius="14"
+                    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                    Tag="CartPage" Click="OnNavigateClick"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <FontIcon Glyph="&#xE7BF;" FontSize="44"/>
+                    <TextBlock Text="Carrinho" FontSize="16" FontWeight="SemiBold" TextAlignment="Center"/>
+                    <TextBlock Text="Itens selecionados" Opacity="0.7"/>
                 </StackPanel>
             </Button>
 
-            <!-- Card: Detalhes -->
-            <Button
-                Grid.Row="1"
-                Grid.Column="0"
-                Padding="12"
-                Tag="ProductDetailsPage"
-                Click="OnNavigateClick"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <StackPanel
-                    Spacing="8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <FontIcon Glyph="&#xECC8;" FontSize="48"/>
-                    <TextBlock
-                        Text="Adicionar Produtos"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        TextAlignment="Center"/>
+            <Button Grid.Row="1" Grid.Column="0" Padding="16" CornerRadius="14"
+                    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                    Tag="ProductDetailsPage" Click="OnNavigateClick"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <FontIcon Glyph="&#xECC8;" FontSize="44"/>
+                    <TextBlock Text="Adicionar Produtos" FontSize="16" FontWeight="SemiBold" TextAlignment="Center"/>
+                    <TextBlock Text="Cadastro rápido" Opacity="0.7"/>
                 </StackPanel>
             </Button>
 
-            <!-- Card: Perfil -->
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                Padding="12"
-                Tag="UserProfilePage"
-                Click="OnNavigateClick"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <StackPanel
-                    Spacing="8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <FontIcon Glyph="&#xE77B;" FontSize="48"/>
-                    <TextBlock
-                        Text="Perfil"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        TextAlignment="Center"/>
+            <Button Grid.Row="1" Grid.Column="1" Padding="16" CornerRadius="14"
+                    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                    Tag="UserProfilePage" Click="OnNavigateClick"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <FontIcon Glyph="&#xE77B;" FontSize="44"/>
+                    <TextBlock Text="Perfil" FontSize="16" FontWeight="SemiBold" TextAlignment="Center"/>
+                    <TextBlock Text="Dados da conta" Opacity="0.7"/>
                 </StackPanel>
             </Button>
 
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="Narrow">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0"/>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="(Grid.RowDefinitions)[0].Height" Value="Auto"/>
+                            <Setter Target="(Grid.RowDefinitions)[1].Height" Value="Auto"/>
+                            <Setter Target="(Grid.ColumnDefinitions)[0].Width" Value="*"/>
+                            <Setter Target="(Grid.ColumnDefinitions)[1].Width" Value="0"/>
+                            <Setter Target="Grid.Row[0]" Value="0"/>
+                            <Setter Target="Grid.Column[0]" Value="0"/>
+                            <Setter Target="Grid.Row[1]" Value="1"/>
+                            <Setter Target="Grid.Column[1]" Value="0"/>
+                            <Setter Target="Grid.Row[2]" Value="2"/>
+                            <Setter Target="Grid.Column[2]" Value="0"/>
+                            <Setter Target="Grid.Row[3]" Value="3"/>
+                            <Setter Target="Grid.Column[3]" Value="0"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Wide">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="800"/>
+                        </VisualState.StateTriggers>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
         </Grid>
     </Grid>
 </Page>
